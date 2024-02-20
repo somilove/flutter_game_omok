@@ -3,11 +3,12 @@ class UsersPlayModel {
   final int? x;
   final int? y;
   final int? step;
-  final bool? result;
+  final bool? isTurn;
+  final String? result;
   //내가 승리면 상대에게 패배 전달, 내가 패배면 상대에게 승리 전달, 무승부는 그대로 전달
 
   UsersPlayModel({
-    this.roomId, this.x, this.y, this.step, this.result
+    this.roomId, this.x, this.y, this.step, this.isTurn, this.result
   });
 
   UsersPlayModel.fromJson(Map<String, dynamic> json)
@@ -15,6 +16,7 @@ class UsersPlayModel {
         x = json['x'],
         y = json['y'],
         step = json['step'],
+        isTurn = json['is_turn'],
         result = json['result'];
 
   Map<String, dynamic> toJson() {
@@ -24,7 +26,8 @@ class UsersPlayModel {
       'x' : x,
       'y' : y,
       'step' : step,
-      'result' : result
+      'is_turn' : isTurn,
+      'result' : result,
     };
   }
 }

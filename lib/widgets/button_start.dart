@@ -31,13 +31,18 @@ class StartButton extends StatelessWidget {
             if(controller.v_flagButtonPlay.value == true) {
                   step_initial();
                   if(aiPlay) {
-                    (controller.v_youStone.value == 'b')
-                        ? controller.v_youStone.value = 'w'
-                        : controller.v_youStone.value = 'b'; //게이머의 돌
+                      (controller.v_youStone.value == 'b')
+                          ? controller.v_youStone.value = 'w'
+                          : controller.v_youStone.value = 'b'; //게이머의 돌
                   } else {
                     usersPlayController.connect();
+                      (usersPlayController.usersPlayData!.step == 0
+                          && usersPlayController.usersPlayData!.isTurn == true)
+                          ? controller.v_youStone.value = 'b'
+                          : controller.v_youStone.value = 'w';
+                      controller.v_down.value = 'b';
                   }
-                  await showDialog(
+                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
@@ -55,10 +60,13 @@ class StartButton extends StatelessWidget {
                           ],
                         );
                       });
+                  controller.v_flagButtonPlay.value = false;
                   if(aiPlay) {
+                    controller.v_isAiPlay.value = true;
                     press_play();
-                  }
+                  } else {
 
+                  }
             } else {
               EasyLoading.instance.fontSize = 16;
               EasyLoading.instance.displayDuration =
@@ -74,11 +82,8 @@ class StartButton extends StatelessWidget {
     );
   }
 
-
   //이벤트 - 게임시작 버튼을 누르면
   void press_play() {
-    controller.v_flagButtonPlay.value = false;
-    controller.v_isAiPlay.value = true;
     //게이머의 돌이 백이면 AI가 먼저 둠
     if (controller.v_youStone.value == 'w') {
       controller.v_listBox.value[7][7] = 'b';
