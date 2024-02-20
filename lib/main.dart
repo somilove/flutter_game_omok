@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; //가로 세로 회전 기능
+import 'package:omok/controller/users_play_controller.dart';
 import 'omokList.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import 'package:just_audio/just_audio.dart'; //소리 mp3
 import 'package:flutter_easyloading/flutter_easyloading.dart'; //팝업 메시지_토스트
 import 'package:url_launcher/url_launcher.dart'; //웹페이지 열기에 사용
-import 'package:intl/intl.dart'; //달력
-import 'package:omok/variable/variables.dart';
+import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 import 'package:omok/database/database.dart';
 import 'package:omok/widgets/game_board.dart';
@@ -16,6 +15,7 @@ import 'package:omok/widgets/button_stop.dart';
 import 'package:omok/widgets/display_score.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
   configLoading();
 }
@@ -37,13 +37,14 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp]); //세로 고정
     Future<Database> database =
     DatabaseHelper.initDatabase(); //실행결과를 future로 받아 database에 값이 넘어온 후에 사용가능하도록 함
 
-    Get.put(VariablesController());
+    Get.put(VariablesController()); //Get.put을 통해 컨트롤러 주입
+    Get.put(UsersPlayController());
 
 
     return GetMaterialApp(
@@ -69,6 +70,8 @@ class DatabaseApp extends StatefulWidget {
 
 class _DatabaseApp extends State<DatabaseApp> {
   final VariablesController controller = Get.find();
+  //부모위젯에서 Get.put해준적 있다면 Get.find로 컨트롤러 불러올 수 있음
+
   late int i; //루프용
   late int j; //루프용
   late int ii; //루프용
@@ -79,6 +82,7 @@ class _DatabaseApp extends State<DatabaseApp> {
     _player.stop();
     _player.dispose();
     super.dispose();
+
   }
 
   @override
@@ -108,10 +112,10 @@ class _DatabaseApp extends State<DatabaseApp> {
           //백그라운드를 투명하게 만듦
           appBar: AppBar(
             title: const Text(
-              'AI 오목',
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              'OMOK LOVER',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 23),
             ),
-            backgroundColor: Colors.lightGreen[300],
+            backgroundColor: Colors.black,
             actions: [
               //개인정보처리방침 연결 버튼
               IconButton(
@@ -182,7 +186,7 @@ class _DatabaseApp extends State<DatabaseApp> {
                 Expanded(
                   flex: 1,
                   child: Container(
-                    color: Colors.lightGreen[300],
+                    color: Colors.lightBlue[100],
                     child: Column(
                       children: [
                         //하단 위
@@ -197,11 +201,14 @@ class _DatabaseApp extends State<DatabaseApp> {
                                 Expanded(
                                   flex: 1,
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                        flex: 1,
                                         child: Container(
-                                          color: Colors.yellow[200],
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.white, width: 4),
+                                            borderRadius: BorderRadius.circular(50)
+                                          ),
                                           alignment: Alignment.center,
                                           child: const Text(
                                             'YOU',
@@ -212,8 +219,8 @@ class _DatabaseApp extends State<DatabaseApp> {
                                           ),
                                         ),
                                       ),
+                                      // Divider(color: Colors.black,),
                                       Expanded(
-                                        flex: 1,
                                         child: Container(
                                           margin: const EdgeInsets.fromLTRB(
                                               0, 5, 0, 0),
@@ -225,15 +232,8 @@ class _DatabaseApp extends State<DatabaseApp> {
                                     ],
                                   ),
                                 ),
-                                //3 body 하단 버튼 게임시작
-                                Expanded(
-                                  flex: 1,
-                                  child: StartButton(step_initial),
-                                ),
-                                //3 body 하단 버튼 기권
-                                Expanded(
-                                  flex: 1,
-                                  child: StopButton(),
+                                const VerticalDivider(
+                                  color: Colors.black,
                                 ),
                                 //3 body 하단 텍스트(현재 수순)
                                 Expanded(
@@ -243,20 +243,23 @@ class _DatabaseApp extends State<DatabaseApp> {
                                     child: Column(
                                       children: [
                                         Expanded(
-                                          flex: 1,
+                                          flex:1,
                                           child: Container(
-
-                                            color: Colors.yellow[200],
+                                            decoration: BoxDecoration(
+                                                border: Border.all(color: Colors.white, width: 3),
+                                                borderRadius: BorderRadius.circular(50)
+                                            ),
                                             alignment: Alignment.center,
-                                            child: const Text('현재 수순',
+                                            child: const Text('현재\n수순',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16),
                                             ),
                                           ),
                                         ),
+                                        // Divider(color: Colors.black,),
                                         Expanded(
-                                          flex: 1,
+                                          flex:1,
                                           child: Container(
                                             margin: const EdgeInsets.fromLTRB(
                                                 0, 5, 0, 0),
@@ -272,6 +275,40 @@ class _DatabaseApp extends State<DatabaseApp> {
                                       ],
                                     ),
                                   ),
+                                ),
+
+                                Expanded(
+                                  flex: 2,
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            margin: const EdgeInsets.all(5),
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: StartButton(step_initial: step_initial, label: '대결하기', aiPlay: false,),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                //3 body 하단 버튼 게임시작
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: StartButton(step_initial: step_initial, label: '연습하기', aiPlay: true,),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )),
+
+                                //3 body 하단 버튼 기권
+                                Expanded(
+                                  flex: 1,
+                                  child: StopButton(),
                                 ),
 
                               ],

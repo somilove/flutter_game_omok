@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:omok/variable/variables.dart';
+import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:omok/database/database.dart';
@@ -11,16 +11,17 @@ class StopButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.yellow,
-      margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+      margin: const EdgeInsets.all(5),
       child: TextButton(
-        child: const Text('기권',
+        child: const Text('기\n권',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.bold, color: Colors.black87,
               fontSize: 24),),
         style: TextButton.styleFrom(
             minimumSize: Size.infinite,
             foregroundColor: Colors.black,
-            backgroundColor: Colors.green[700]),
+            // backgroundColor: Colors.green[700]),
+            backgroundColor: Colors.white),
         onPressed: () async {
           if (controller.v_flagButtonPlay.value == false) {
             await showDialog(

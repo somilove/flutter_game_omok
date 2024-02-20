@@ -1,4 +1,4 @@
-import 'package:omok/variable/variables.dart';
+import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 
 //모든 배열 설정

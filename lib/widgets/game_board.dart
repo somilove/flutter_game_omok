@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:omok/variable/variables.dart';
+import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 import 'package:omok/utilities/step_down_stone.dart';
 

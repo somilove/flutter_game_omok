@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:omok/variable/variables.dart';
+import 'package:omok/controller/variables.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
