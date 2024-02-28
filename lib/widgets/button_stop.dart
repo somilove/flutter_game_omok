@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:omok/controller/users_play_controller.dart';
 import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:omok/database/database.dart';
 
 class StopButton extends StatelessWidget {
+  final UsersPlayController usersController = Get.find();
   final VariablesController controller = Get.find();
 
   @override
@@ -36,6 +38,10 @@ class StopButton extends StatelessWidget {
                           onPressed: () {
                             step_end_play();
                             Navigator.of(context).pop();},
+                          child: const Text('예')),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();},
                           child: const Text('아니오')),
                     ],
                   );
@@ -51,14 +57,15 @@ class StopButton extends StatelessWidget {
 
   //기권버튼 이벤트
   void step_end_play() {
-    controller.v_flagButtonPlay.value == true;
+    controller.v_flagButtonPlay.value = true;
     EasyLoading.instance.fontSize = 24;
     EasyLoading.instance.displayDuration = const Duration(milliseconds: 2000);
     EasyLoading.showToast(' *** 기권 패 ***',);
-
     controller.v_defeat.value++;
     (controller.v_downCount.value < 20) ? controller.v_score.value = controller.v_score.value - 10 : controller.v_score.value = controller.v_score.value - 5;
-    // setState(() {});
+    if(controller.v_isAiPlay.value == false) {
+      usersController.closeConnection();
+    }
     DatabaseHelper.insert();
   }
 }

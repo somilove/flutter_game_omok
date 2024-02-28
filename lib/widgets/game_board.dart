@@ -79,7 +79,9 @@ class GameBoard extends StatelessWidget {
                           child: Text(controller.v_listBox_count.value[l][k],
                               style: const TextStyle(fontSize: 12)),
                           onPressed: () {
-                            step_downStone(l, k);
+                           if (controller.v_down.value == controller.v_youStone.value){
+                             step_downStone(l, k);
+                           } else { return;}
                           },),),),
                       // ~첫번째 반복 입력 2~14까지 (Row 항목 전체 13개 완성)
                       Expanded(flex: 4, child: Container(),),

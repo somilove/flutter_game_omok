@@ -4,7 +4,7 @@ class VariablesController extends GetxController {
   var v_image_volumn = 'asset/image/volumn_on.png'.obs;
   var v_volumn = true.obs;
   var v_youStone = 'n'.obs; //게이머의 돌 black, white
-  var v_rivalStone = 'n'.obs;
+  var v_otherStone = 'n'.obs;
   var v_aiStone = 'n'.obs; //AI의 돌 black, white
   var v_downCount = 0.obs; //현재 수순
   var v_win = 0.obs; //( 승 = v_win)
@@ -30,6 +30,7 @@ class VariablesController extends GetxController {
   var v_scoreGrd2 = 0.obs;
   var v_today = ''.obs; //DB 입력시 px(primary key)로 사용되는 일시 / 게임 종료될때 현재시간 년월일시분초를 String 타입으로 관리
   var v_isAiPlay = false.obs;
+
 
   //모든 Flag 설정
   var v_flagButtonPlay = true.obs; //게임 시작 버튼

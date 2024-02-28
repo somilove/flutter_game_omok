@@ -1,11 +1,14 @@
+import 'package:omok/controller/users_play_controller.dart';
 import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:omok/models/users_play_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:omok/main.dart';
 import 'package:omok/database/database.dart';
 
 final VariablesController controller = Get.find();
+final UsersPlayController usersController = Get.find();
 late int i; //루프용
 late int j; //루프용
 late int ii; //루프용
@@ -26,6 +29,15 @@ void step_check_5() {
   if (controller.v_flagButtonPlay.value == false) step_check_grd2();
   if (controller.v_flagButtonPlay.value == false) return;
 
+  if(controller.v_isAiPlay == false) {
+    final data = UsersPlayModel(
+      roomId: usersController.usersPlayData!.roomId,
+      x: controller.v_x_count.value,
+      y: controller.v_y_count.value,
+      result: 'defeat',
+    );
+    usersController.sendMessage(data: data);
+  }
   EasyLoading.instance.fontSize = 24;
   EasyLoading.instance.displayDuration = const Duration(milliseconds: 2000);
   EasyLoading.showToast((controller.v_down.value == controller.v_youStone.value ? ' *** You Win *** ' : ' *** You Lose *** '),);
@@ -43,8 +55,19 @@ void step_check_5() {
 //체크하기(무승부 조건 체크)
 void step_check_downCount() {
   if (controller.v_downCount.value < 120) return; //120수보다 크거나 같으면 무승부
-
   controller.v_flagButtonPlay.value = true;
+
+  if(controller.v_isAiPlay == false) {
+    final data = UsersPlayModel(
+      roomId: usersController.usersPlayData!.roomId,
+      x: controller.v_x_count.value,
+      y: controller.v_y_count.value,
+      result: 'tie',
+    );
+    usersController.sendMessage(data: data);
+  }
+
+
   EasyLoading.instance.fontSize = 24;
   EasyLoading.instance.displayDuration = const Duration(milliseconds: 2000);
   EasyLoading.showToast(' *** 무승부 *** ');

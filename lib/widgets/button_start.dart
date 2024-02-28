@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:omok/controller/users_play_controller.dart';
@@ -7,14 +8,16 @@ import 'package:get/get.dart';
 class StartButton extends StatelessWidget {
   final VariablesController controller = Get.find();
   final UsersPlayController usersPlayController = Get.find();
-  late final Function step_initial;
-  final String label;
-  final bool aiPlay;
+  late final Function? step_initial;
+  final String? label;
+  final bool? aiPlay;
+
   StartButton({
-    Key? key, required this.step_initial, required this.label, required this.aiPlay}) :super(key: key);
+    Key? key, this.step_initial, this.label, this.aiPlay}) :super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       // color: Colors.pink,
       //   margin: const EdgeInsets.fromLTRB(
@@ -27,45 +30,20 @@ class StartButton extends StatelessWidget {
               // backgroundColor: Colors.green[700]),
               backgroundColor: Colors.black),
           // ignore: void_checks
-          onPressed: () async {
+          onPressed:  () async {
             if(controller.v_flagButtonPlay.value == true) {
-                  step_initial();
-                  if(aiPlay) {
+                  step_initial!();
+                  if(aiPlay == true) {
                       (controller.v_youStone.value == 'b')
                           ? controller.v_youStone.value = 'w'
                           : controller.v_youStone.value = 'b'; //게이머의 돌
+                      await dialogBuilder(context);
+                      controller.v_flagButtonPlay.value = false;
+                      controller.v_isAiPlay.value = true;
+                      press_play();
                   } else {
-                    usersPlayController.connect();
-                      (usersPlayController.usersPlayData!.step == 0
-                          && usersPlayController.usersPlayData!.isTurn == true)
-                          ? controller.v_youStone.value = 'b'
-                          : controller.v_youStone.value = 'w';
-                      controller.v_down.value = 'b';
-                  }
-                   await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(controller.v_youStone.value == 'w'
-                              ? '게이머는 백으로 후수입니다'
-                              : '게이머는 흑으로 선공합니다'),
-                          actions: <Widget>[
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop();
-                                },
-                                child: const Text(
-                                    '확인')),
-                          ],
-                        );
-                      });
-                  controller.v_flagButtonPlay.value = false;
-                  if(aiPlay) {
-                    controller.v_isAiPlay.value = true;
-                    press_play();
-                  } else {
-
+                    controller.v_isAiPlay.value = false;
+                    usersPlayController.connect(context);
                   }
             } else {
               EasyLoading.instance.fontSize = 16;
@@ -75,7 +53,7 @@ class StartButton extends StatelessWidget {
                   ' *** Not executed! ***');
             }
           },
-          child: Text(label, style: const TextStyle(
+          child: Text(label!, style: const TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.white,
                 fontSize: 24),),
         )
@@ -96,5 +74,26 @@ class StartButton extends StatelessWidget {
       controller.v_down.value = 'b';
       controller.v_aiStone.value = 'w';
     }
+  }
+
+  Future<void> dialogBuilder(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(controller.v_youStone.value == 'w'
+                ? '게이머는 백으로 후수입니다'
+                : '게이머는 흑으로 선공합니다'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pop();
+                  },
+                  child: const Text(
+                      '확인')),
+            ],
+          );
+        });
   }
 }

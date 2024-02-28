@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
         [DeviceOrientation.portraitUp]); //세로 고정
     Future<Database> database =
     DatabaseHelper.initDatabase(); //실행결과를 future로 받아 database에 값이 넘어온 후에 사용가능하도록 함
-
     Get.put(VariablesController()); //Get.put을 통해 컨트롤러 주입
     Get.put(UsersPlayController());
 
