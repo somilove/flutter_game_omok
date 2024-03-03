@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; //가로 세로 회전 기능
 import 'package:omok/controller/users_play_controller.dart';
+import 'package:omok/widgets/audio_player.dart';
 import 'omokList.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:just_audio/just_audio.dart'; //소리 mp3
@@ -78,8 +79,8 @@ class _DatabaseApp extends State<DatabaseApp> {
 
   @override
   void dispose() {
-    _player.stop();
-    _player.dispose();
+    player.stop();
+    player.dispose();
     super.dispose();
 
   }
@@ -99,13 +100,12 @@ class _DatabaseApp extends State<DatabaseApp> {
         controller.v_listBox_count.value[i][j] = ''; //또 맨 위 컨테이너의 버튼 텍스트 값을 빈칸(null)으로 초기화
       }
     }
-    //setState()를 싫애하면 위젯의 build 함수가 실행되면서 변경값이 화면에 반영된다.
-    // setState(() {});
   }
 
     @override
     Widget build(BuildContext context) {
       return GetX<VariablesController>(
+        init: VariablesController(),
         builder: (controller) => Scaffold(
           backgroundColor: Colors.transparent,
           //백그라운드를 투명하게 만듦
@@ -116,52 +116,28 @@ class _DatabaseApp extends State<DatabaseApp> {
             ),
             backgroundColor: Colors.black,
             actions: [
-              //개인정보처리방침 연결 버튼
-              IconButton(
-                  onPressed: () async {
-                    if (controller.v_flagButtonPlay.value == false) {
-                      //게임중이 아닐 때 작동하도록 하기 위해 controller.v_flagButtonPlay.value 변수값 체크하여 false일 경우 실행하지 않고 토스트 메시지를 보임
-                      EasyLoading.instance.fontSize = 16;
-                      EasyLoading.instance.displayDuration =
-                      const Duration(milliseconds: 500); //메시지 유지시간 0.5초
-                      EasyLoading.showToast(' *** Not executed! *** ');
+              //음악소리 on/off 버튼
+              if(controller.v_volumn.value == true) IconButton(
+                  onPressed: () {
+                    if( controller.v_volumn.value == true) {
+                      controller.v_volumn.value = false;
                     } else {
-                      const url = 'https://www.naver.com/';
-                      await launchUrl(Uri.parse(url),
-                          mode: LaunchMode.externalApplication //외부브라우저 사용 모드
-                      );
+                      controller.v_volumn.value = true;
                     }
                   },
-                  icon: const Icon(Icons.lock)),
-              //플레이스토어 앱 연결버튼
-              IconButton(
-                onPressed: () async {
-                  if (controller.v_flagButtonPlay.value == false) {
-                    //게임중이 아닐 때 작동하도록 하기 위해 controller.v_flagButtonPlay.value 변수값 체크하여 false일 경우 실행하지 않고 토스트 메시지를 보임
-                    EasyLoading.instance.fontSize = 16;
-                    EasyLoading.instance.displayDuration =
-                    const Duration(milliseconds: 500); //메시지 유지시간 0.5초
-                    EasyLoading.showToast(' *** Not executed! *** ');
-                  } else {
-                    const url = 'https://www.youtube.com/';
-                    await launchUrl(Uri.parse(url),
-                        mode: LaunchMode.externalApplication //외부브라우저 사용 모드
-                    );
-                  }
-                },
-                icon: const Icon(Icons.play_arrow),
-              ),
-              //음악소리 on/off 버튼
-              IconButton(
+                  icon: const Icon(Icons.volume_mute)),
+              if(controller.v_volumn.value == false) IconButton(
                   onPressed: () {
-                    controller.v_volumn.value ? false : true;
-                    setState(() {});
+                    if( controller.v_volumn.value == true) {
+                      controller.v_volumn.value = false;
+                    } else {
+                      controller.v_volumn.value = true;
+                    }
                   },
-                  icon:
-                  controller.v_volumn.value ? const Icon(Icons.volume_mute) : const Icon(
-                      Icons.volume_off)),
+                  icon: const Icon(Icons.volume_off)),
+
               //결과 화면으로 이동하는 버튼
-              IconButton(
+              TextButton(
                   onPressed: () {
                     if (controller.v_flagButtonPlay.value == true) {
                       Navigator.of(context).pushNamed('/omokList', arguments: widget.db);
@@ -172,7 +148,7 @@ class _DatabaseApp extends State<DatabaseApp> {
                       EasyLoading.showToast(' *** Not executed! ***');
                     }
                   },
-                  icon: const Icon(Icons.military_tech))
+                  child: Text('RANK', style: TextStyle(fontWeight: FontWeight.bold),))
             ],
           ),
           body:
@@ -309,7 +285,6 @@ class _DatabaseApp extends State<DatabaseApp> {
                                   flex: 1,
                                   child: StopButton(),
                                 ),
-
                               ],
                             ),
                           ),
@@ -328,11 +303,7 @@ class _DatabaseApp extends State<DatabaseApp> {
     }
 
 
-  final _player = AudioPlayer();
-  Future audioPlayer(parm_mp3) async {
-    await _player.setAsset(parm_mp3);
-    _player.play();
-  }
+
 
 }
 

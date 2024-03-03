@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:omok/models/users_play_model.dart';
 import 'package:omok/utilities/step_down_stone_ai.dart';
 import 'package:omok/utilities/step_check.dart';
-import 'dart:async'; //타이머
+import 'dart:async';
+
+import '../widgets/audio_player.dart'; //타이머
 
 
   final VariablesController controller = Get.find();
@@ -16,6 +18,7 @@ import 'dart:async'; //타이머
     //돌을 놓았으니 게임판에 표시하고 다음에 놓을 돌을 결정함
     if (controller.v_listBox.value[x][y] == 'n') { //돌을 놓을 수 있는 위치인지 확인
       controller.v_listBox.value[x][y] = controller.v_down.value; //흑돌 or 백돌
+      if(controller.v_volumn.value == true) audioPlayer('asset/audio/stone.mp3');
       controller.v_downCount.value++;
       controller.v_listBox_count.value[x][y] = 'O'; //v_downCount.toString(); //마지막 수에 O을 표시
       controller.v_listBox_count.value[controller.v_x_count.value][controller.v_y_count.value] = ''; //수순표시(이전버튼)
@@ -38,6 +41,7 @@ import 'dart:async'; //타이머
       await Timer(Duration(seconds: 1), () {
         //AI가 돌을 놓고 끝날 조건 체크
         step_downStone_AI(); //AI 착수 실행
+        if(controller.v_volumn.value == true) audioPlayer('asset/audio/stone.mp3');
         controller.v_downCount.value++;
         controller.v_listBox_count.value[controller.v_x_AI.value][controller.v_y_AI.value] = 'O'; //v_downCount.toString(); //수순표시 => AI가  착수한 버튼의 텍스트에 'O'를
         controller.v_listBox_count.value[controller.v_x_count.value][controller.v_y_count.value] = ''; //수순표시 => 이전 버튼의 텍스트에 ''을 넣어줌

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:omok/controller/variables.dart';
+import 'package:omok/models/omok.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -34,4 +35,20 @@ class DatabaseHelper {
           "update omoks set win = ${controller.v_win.value}, tie = ${controller.v_tie.value}, defeat = ${controller.v_defeat.value}, downCount = ${controller.v_downCount.value}, score = ${controller.v_score.value} where omokDate = '$_today'");
     }
   }
+  //
+  // Future<List<Omok>> getOmokList() async {
+  //   final Database db = await database;
+  //   List<Map<String, dynamic>> maps = await db.rawQuery(
+  //     'select omokDate, win, tie, defeat, downCount, score from omoks order by score desc'); //점수가 가장 큰 것이 먼저(점수의 역순)
+  //   return List.generate(maps.length, (i) {
+  //     return Omok(
+  //       omokDate: maps[i]['omokDate'],
+  //       win: maps[i]['win'],
+  //       tie: maps[i]['tie'],
+  //       defeat: maps[i]['defeat'],
+  //       downCount: maps[i]['downCount'],
+  //       score: maps[i]['score'],
+  //     );
+  //   });
+  // }
 }

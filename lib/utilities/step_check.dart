@@ -7,6 +7,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:omok/main.dart';
 import 'package:omok/database/database.dart';
 
+import '../widgets/audio_player.dart';
+
 final VariablesController controller = Get.find();
 final UsersPlayController usersController = Get.find();
 late int i; //루프용
@@ -43,9 +45,11 @@ void step_check_5() {
   EasyLoading.showToast((controller.v_down.value == controller.v_youStone.value ? ' *** You Win *** ' : ' *** You Lose *** '),);
 
   if (controller.v_down.value == controller.v_youStone.value) {
+    if(controller.v_volumn.value == true) audioPlayer('asset/audio/win.mp3');
     controller.v_win.value++;
     (controller.v_downCount.value < 20) ? controller.v_score.value = controller.v_score.value + 30 : controller.v_score.value = controller.v_score.value + 20;
   } else {
+    if(controller.v_volumn.value == true) audioPlayer('asset/audio/lose.mp3');
     controller.v_defeat.value++;
     (controller.v_downCount.value < 20) ? controller.v_score.value = controller.v_score.value - 20 : controller.v_score.value = controller.v_score.value - 10;
   }

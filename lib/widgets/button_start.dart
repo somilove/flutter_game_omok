@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:omok/controller/users_play_controller.dart';
 import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
+import 'package:omok/widgets/audio_player.dart';
 
 class StartButton extends StatelessWidget {
   final VariablesController controller = Get.find();
@@ -49,6 +50,7 @@ class StartButton extends StatelessWidget {
               EasyLoading.instance.fontSize = 16;
               EasyLoading.instance.displayDuration =
               const Duration(milliseconds: 500);
+              if(controller.v_volumn.value == true) audioPlayer('asset/audio/error.mp3');
               EasyLoading.showToast(
                   ' *** Not executed! ***');
             }
@@ -65,6 +67,7 @@ class StartButton extends StatelessWidget {
     //게이머의 돌이 백이면 AI가 먼저 둠
     if (controller.v_youStone.value == 'w') {
       controller.v_listBox.value[7][7] = 'b';
+      if(controller.v_volumn.value == true) audioPlayer('asset/audio/stone.mp3');
       controller.v_aiStone.value = 'b';
       controller.v_downCount.value++;
       controller.v_x_count.value = 7;
@@ -77,6 +80,7 @@ class StartButton extends StatelessWidget {
   }
 
   Future<void> dialogBuilder(BuildContext context) {
+    if(controller.v_volumn.value == true) audioPlayer('asset/audio/start.mp3');
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -87,6 +91,7 @@ class StartButton extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                   onPressed: () {
+                    if(controller.v_volumn.value == true) audioPlayer('asset/audio/select.ogg');
                     Navigator.of(context)
                         .pop();
                   },

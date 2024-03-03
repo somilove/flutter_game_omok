@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'omok.dart';
+import 'models/omok.dart';
 
 class OmokListApp extends StatefulWidget {
   final Future<Database> database;
-
   OmokListApp(this.database);
   @override
   State<StatefulWidget> createState() => _OmokListApp();
