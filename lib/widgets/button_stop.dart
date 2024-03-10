@@ -13,18 +13,33 @@ class StopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.yellow,
-      margin: const EdgeInsets.all(5),
-      child: TextButton(
-        child: const Text('기\n권',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black87,
-              fontSize: 24),),
-        style: TextButton.styleFrom(
-            minimumSize: Size.infinite,
-            foregroundColor: Colors.black,
-            // backgroundColor: Colors.green[700]),
-            backgroundColor: Colors.white),
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 4,
+              offset: const Offset(0, 3),
+            )
+          ],
+          borderRadius: BorderRadius.circular(20),
+          gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white,
+                Colors.black87,
+              ]
+          )
+      ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          // foregroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            )
+        ),
         onPressed: () async {
           if (controller.v_flagButtonPlay.value == false) {
             if(controller.v_volumn.value == true) audioPlayer('asset/audio/select.ogg');
@@ -32,20 +47,20 @@ class StopButton extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Alert',
-                        style: TextStyle(color: Colors.pink, fontSize: 15)),
-                    content: Text('기권하시겠습니까?'),
+                    // title: const Text('Alert',
+                    //     style: TextStyle(color: Colors.pink, fontSize: 15)),
+                    content: const Text('기권하시겠습니까?', style: TextStyle(fontSize: 20),),
                     actions: <Widget>[
                       TextButton(
                           onPressed: () {
                             step_end_play();
                             Navigator.of(context).pop();},
-                          child: const Text('예')),
+                          child: const Text('예', style: TextStyle(fontSize: 16))),
                       TextButton(
                           onPressed: () {
                             if(controller.v_volumn.value == true) audioPlayer('asset/audio/select.ogg');
                             Navigator.of(context).pop();},
-                          child: const Text('아니오')),
+                          child: const Text('아니오', style: TextStyle(fontSize: 16))),
                     ],
                   );
                 });
@@ -56,7 +71,12 @@ class StopButton extends StatelessWidget {
             EasyLoading.showToast(' *** Not executed! ***');
           }
         },
-      ),);
+        child: const Text('기권',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.white,
+              fontSize: 18),),
+      ),
+    );
   }
 
   //기권버튼 이벤트
@@ -64,7 +84,7 @@ class StopButton extends StatelessWidget {
     controller.v_flagButtonPlay.value = true;
     EasyLoading.instance.fontSize = 24;
     EasyLoading.instance.displayDuration = const Duration(milliseconds: 2000);
-    EasyLoading.showToast(' *** 기권 패 ***',);
+    EasyLoading.showToast('You Lose\n기권 패',);
     if(controller.v_volumn.value == true) audioPlayer('asset/audio/lose.mp3');
     controller.v_defeat.value++;
     (controller.v_downCount.value < 20) ? controller.v_score.value = controller.v_score.value - 10 : controller.v_score.value = controller.v_score.value - 5;

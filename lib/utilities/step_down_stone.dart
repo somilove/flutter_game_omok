@@ -32,7 +32,7 @@ import '../widgets/audio_player.dart'; //타이머
     if (controller.v_flagButtonPlay.value == true ) return; //게임이 끝났으면 종료
     (controller.v_down.value == 'b') ? controller.v_down.value = 'w' : controller.v_down.value = 'b'; //돌을 놓았으니 다음 놓을 돌 v_down 변경
     controller.v_x_previous.value = x; //이전 착수한 변수(by gamer) => 방굼 둔 돌의 위치로 저장 => AI 최적수 찾기와 체크로직에서 사용할 변수
-    controller.v_y_previous.value = y; //이전 착수한 변수(by gamer) => 방굼 둔 돌의 위치로 저장 => AI 최적수 찾기와 체크로직에서 사용할 변수
+    controller.v_y_previous.value = y; //이전 착수한 변수(by gamer) => 방굼 둔 돌의 위치로 저장 => AI 최적수 찾기와 체크로직에서 사용할  변수
 
     //AI 착수 1초 지연시키기
     if(controller.v_isAiPlay.value) {

@@ -3,8 +3,6 @@ import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:omok/models/users_play_model.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:omok/main.dart';
 import 'package:omok/database/database.dart';
 
 import '../widgets/audio_player.dart';
@@ -42,7 +40,7 @@ void step_check_5() {
   }
   EasyLoading.instance.fontSize = 24;
   EasyLoading.instance.displayDuration = const Duration(milliseconds: 2000);
-  EasyLoading.showToast((controller.v_down.value == controller.v_youStone.value ? ' *** You Win *** ' : ' *** You Lose *** '),);
+  EasyLoading.showToast((controller.v_down.value == controller.v_youStone.value ? 'You Win' : 'You Lose'),);
 
   if (controller.v_down.value == controller.v_youStone.value) {
     if(controller.v_volumn.value == true) audioPlayer('asset/audio/win.mp3');
@@ -74,7 +72,7 @@ void step_check_downCount() {
 
   EasyLoading.instance.fontSize = 24;
   EasyLoading.instance.displayDuration = const Duration(milliseconds: 2000);
-  EasyLoading.showToast(' *** 무승부 *** ');
+  EasyLoading.showToast('무승부');
 
   controller.v_tie.value++;
   controller.v_score.value = controller.v_score.value + 10;

@@ -20,45 +20,63 @@ class StartButton extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      // color: Colors.pink,
-      //   margin: const EdgeInsets.fromLTRB(
-      //       0, 0, 0, 0),
-        child: TextButton(
-          style: TextButton.styleFrom(
-              minimumSize: Size.infinite,
-              //글자크기영역이 24보다 작게되면 컨테이너의 최대 영역으로 설정
-              foregroundColor: Colors.black,
-              // backgroundColor: Colors.green[700]),
-              backgroundColor: Colors.black),
-          // ignore: void_checks
-          onPressed:  () async {
-            if(controller.v_flagButtonPlay.value == true) {
-                  step_initial!();
-                  if(aiPlay == true) {
-                      (controller.v_youStone.value == 'b')
-                          ? controller.v_youStone.value = 'w'
-                          : controller.v_youStone.value = 'b'; //게이머의 돌
-                      await dialogBuilder(context);
-                      controller.v_flagButtonPlay.value = false;
-                      controller.v_isAiPlay.value = true;
-                      press_play();
-                  } else {
-                    controller.v_isAiPlay.value = false;
-                    usersPlayController.connect(context);
-                  }
-            } else {
-              EasyLoading.instance.fontSize = 16;
-              EasyLoading.instance.displayDuration =
-              const Duration(milliseconds: 500);
-              if(controller.v_volumn.value == true) audioPlayer('asset/audio/error.mp3');
-              EasyLoading.showToast(
-                  ' *** Not executed! ***');
-            }
-          },
-          child: Text(label!, style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white,
-                fontSize: 24),),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 4,
+            offset: const Offset(0, 3),
+          )
+        ],
+        borderRadius: BorderRadius.circular(20),
+          gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xffbde2ff),
+                Color(0xff0091ff),
+              ]
+          )
+      ),
+      child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         )
+      ),
+      onPressed:  () async {
+        if(controller.v_flagButtonPlay.value == true) {
+              step_initial!();
+              if(aiPlay == true) {
+                  (controller.v_youStone.value == 'b')
+                      ? controller.v_youStone.value = 'w'
+                      : controller.v_youStone.value = 'b'; //게이머의 돌
+                  await dialogBuilder(context);
+                  controller.v_flagButtonPlay.value = false;
+                  controller.v_isAiPlay.value = true;
+                  press_play();
+              } else {
+                usersPlayController.connect(context);
+              }
+        } else {
+          EasyLoading.instance.fontSize = 16;
+          EasyLoading.instance.displayDuration =
+          const Duration(milliseconds: 500);
+          if(controller.v_volumn.value == true) audioPlayer('asset/audio/error.mp3');
+          EasyLoading.showToast(
+              ' *** Not executed! ***');
+        }
+      },
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(label!, style: const TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.white,
+              fontSize: 18),),
+      ),
+              ),
     );
   }
 
@@ -85,9 +103,11 @@ class StartButton extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(controller.v_youStone.value == 'w'
-                ? '게이머는 백으로 후수입니다'
-                : '게이머는 흑으로 선공합니다'),
+            title: Text('대국을 시작합니다.',style: const TextStyle(fontSize: 18, ),),
+
+            content:  Text(controller.v_youStone.value == 'w'
+                ? 'YOU: 백돌, 후수입니다.'
+                : 'YOU: 흑돌, 선수입니다.', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
@@ -101,4 +121,6 @@ class StartButton extends StatelessWidget {
           );
         });
   }
+
+
 }

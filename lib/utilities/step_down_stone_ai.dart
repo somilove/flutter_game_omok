@@ -1,12 +1,6 @@
 import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 
-//모든 배열 설정
-//화면에 놓여진 돌 n: 비어있음, w:백돌, b:흑돌
-// final controller.v_listBox.value = List.generate(13, (i) => List.generate(13, (j) => ''));
-//바둑판 배열(13행 * 13열) => 수순
-// final controller.v_listBox.value_count = List.generate(
-//     13, (i) => List.generate(13, (j) => ''));
 late int i; //루프용
 late int j; //루프용
 late int ii; //루프용
@@ -67,14 +61,14 @@ void step_downStone_5downCount() {
     if (controller.v_y_previous.value < 7 &&
         controller.v_listBox.value[controller.v_x_previous.value][controller.v_y_previous.value + 1] == 'n') {
       controller.v_x_AI.value = controller.v_x_previous.value;
-      controller.v_y_AI.value = controller.v_y_previous.value - 1;
+      controller.v_y_AI.value = controller.v_y_previous.value + 1;
       controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
       return;
     }
     if (controller.v_y_previous.value > 6 &&
         controller.v_listBox.value[controller.v_x_previous.value][controller.v_y_previous.value - 1] == 'n') {
       controller.v_x_AI.value = controller.v_x_previous.value;
-      controller.v_y_AI.value = controller.v_x_previous.value + 1;
+      controller.v_y_AI.value = controller.v_y_previous.value - 1;
       controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
       return;
     }
@@ -84,14 +78,14 @@ void step_downStone_5downCount() {
   if (controller.v_y_previous.value == 6) {
     if (controller.v_x_previous.value < 7 &&
         controller.v_listBox.value[controller.v_x_previous.value + 1][controller.v_y_previous.value] == 'n') {
-      controller.v_x_AI.value = controller.v_x_previous.value - 1;
+      controller.v_x_AI.value = controller.v_x_previous.value + 1;
       controller.v_y_AI.value = controller.v_y_previous.value ;
       controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
       return;
     }
     if (controller.v_x_previous.value > 6 &&
         controller.v_listBox.value[controller.v_x_previous.value - 1][controller.v_y_previous.value] == 'n') {
-      controller.v_x_AI.value = controller.v_x_previous.value + 1;
+      controller.v_x_AI.value = controller.v_x_previous.value - 1;
       controller.v_y_AI.value = controller.v_y_previous.value;
       controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
       return;
@@ -569,6 +563,7 @@ void step_downStone_YOU3() {
   step_downStone_YOU3_grd1();
   if (controller.v_x_AI.value != 13) return;
   step_downStone_YOU3_grd2();
+  if (controller.v_x_AI.value != 13) return;
 }
 
 //5-1. YOU3 찾기 --- 행
@@ -634,7 +629,7 @@ void step_downStone_YOU3_col() {
 
 //5-3. YOU3 찾기 --- 대각선 우측 하향
 void step_downStone_YOU3_grd1() {
-  for (i = 1; j < controller.v_rowBox.value - 5; i++) { //양쪽 벽에 붙어 있을 경우 썩은 3
+  for (i = 1; i < controller.v_rowBox.value - 5; i++) { //양쪽 벽에 붙어 있을 경우 썩은 3
     for (j = 1; j <= controller.v_colBox.value - 5; j++) {
       int _v_count_n = 0;
       int _v_count_YOU = 0;
@@ -656,7 +651,7 @@ void step_downStone_YOU3_grd1() {
       if (_v_count_n == 1 && _v_count_YOU == 3) {
         controller.v_x_AI.value = _v_x_AI;
         controller.v_y_AI.value = _v_y_AI;
-        controller.v_listBox.value[controller.v_x_AI.value][_v_y_AI] = controller.v_down.value;
+        controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
         return;
       }
     }
@@ -665,7 +660,7 @@ void step_downStone_YOU3_grd1() {
 
 //5-4. YOU3 찾기 --- 대각선 우측 상향
 void step_downStone_YOU3_grd2() {
-  for (i = 4; j > controller.v_rowBox.value - 1; i++) {
+  for (i = 4; i < controller.v_rowBox.value - 1; i++) {
     for (j = 0; j <= controller.v_colBox.value - 5; j++) {
       int _v_count_n = 0;
       int _v_count_YOU = 0;
@@ -678,16 +673,15 @@ void step_downStone_YOU3_grd2() {
           _v_x_AI = i - jj;
           _v_y_AI = j + jj;
         } else {
-          if (jj == 0 && controller.v_listBox.value[i + 1][j - 1] == controller.v_aiStone.value) break;
-          if (jj == 3 && controller.v_listBox.value[i - jj - 1][j + jj + 1] == controller.v_aiStone.value)
-            break;
+          if (jj == 0 && controller.v_listBox.value[i - 1][j + 1] == controller.v_aiStone.value) break;
+          if (jj == 3 && controller.v_listBox.value[i - jj - 1][j + jj + 1] == controller.v_aiStone.value) break;
           _v_count_YOU++;
         }
       }
       if (_v_count_n == 1 && _v_count_YOU == 3) {
         controller.v_x_AI.value = _v_x_AI;
         controller.v_y_AI.value = _v_y_AI;
-        controller.v_listBox.value[controller.v_x_AI.value][_v_y_AI] = controller.v_down.value;
+        controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
         return;
       }
     }
@@ -791,11 +785,11 @@ void step_downStone_attack_col(x, y) {
       if (controller.v_count.value == 4) break; else controller.v_count.value++;
       if (controller.v_listBox.value[ii][y] == 'n') {
         controller.v_scoreCol.value = controller.v_scoreCol.value + 1;
-      } else if (controller.v_listBox.value[ii][y] == 'n') {
+      } else if (controller.v_listBox.value[ii][y] == controller.v_youStone.value) {
         controller.v_scoreCol.value = controller.v_scoreCol.value - 3;
         return;
       } else {
-        controller.v_scoreRow.value = controller.v_scoreRow.value + 2 + (5 - controller.v_count.value); //가까이 있을수록 큰 점수 부여
+        controller.v_scoreCol.value = controller.v_scoreCol.value + 2 + (5 - controller.v_count.value); //가까이 있을수록 큰 점수 부여
       }
     }
   }

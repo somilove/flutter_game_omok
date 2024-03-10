@@ -7,38 +7,26 @@ class GameBoard extends StatelessWidget {
   final VariablesController controller = Get.find();
   late int i; //루프용
   late int j; //루프용
-  late int ii; //루프용
-  late int jj; //루프용
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          //MediaQuery 이용해 해상도가 다른 기기에서 게임판을 항상 정사각형으로 유지(가로 세로 동일)
-          width: (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height - 300
-              ? MediaQuery.of(context).size.height - 300
-              : MediaQuery.of(context).size.width),
-          height: (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height - 300
-              ? MediaQuery.of(context).size.height - 300
-              : MediaQuery.of(context).size.width),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width,
           color: Colors.yellow,
           child: Image.asset('asset/image/omok_bg.png',
               fit: BoxFit.contain),
         ),
         //13*13 바둑돌 이미지
         Container(
-          width: (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height - 300
-              ? MediaQuery.of(context).size.height - 300
-              : MediaQuery.of(context).size.width),
-          height: (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height - 300
-              ? MediaQuery.of(context).size.height - 300
-              : MediaQuery.of(context).size.width),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width,
           child: Column(
             children: [
               Expanded(flex: 2, child: Container(),),
               //정확한 버튼 위치 설정하기 위함
-
               for( j = 0 ; j < controller.v_colBox.value ; j ++) Expanded(flex: 30, child: Container(
                 child: Row(
                     children: [
@@ -59,12 +47,8 @@ class GameBoard extends StatelessWidget {
         ),
         //13*13 버튼
         Container(
-          width: (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height - 300
-              ? MediaQuery.of(context).size.height - 300
-              : MediaQuery.of(context).size.width),
-          height: (MediaQuery.of(context).size.width > MediaQuery.of(context).size.height - 300
-              ? MediaQuery.of(context).size.height - 300
-              : MediaQuery.of(context).size.width),
+          width:MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.width,
           child: Column(
             children: [
               Expanded(flex: 2, child: Container(),),
@@ -78,7 +62,7 @@ class GameBoard extends StatelessWidget {
                         alignment: Alignment.center,
                         child: TextButton(
                           child: Text(controller.v_listBox_count.value[l][k],
-                              style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold)),
+                              style: controller.v_down == 'b' ?  const TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black) : const TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.white )),
                           onPressed: () {
                            if (controller.v_down.value == controller.v_youStone.value){
                              step_downStone(l, k);
