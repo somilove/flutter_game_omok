@@ -5,7 +5,6 @@ import 'package:omok/widgets/audio_player.dart';
 import 'screens/omokList.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart'; //팝업 메시지_토스트
-import 'package:url_launcher/url_launcher.dart'; //웹페이지 열기에 사용
 import 'package:omok/controller/variables.dart';
 import 'package:get/get.dart';
 import 'package:omok/database/database.dart';
@@ -161,7 +160,8 @@ class _DatabaseApp extends State<DatabaseApp> {
                     EasyLoading.instance.fontSize = 16;
                     EasyLoading.instance.displayDuration =
                         const Duration(milliseconds: 500);
-                    EasyLoading.showToast(' *** Not executed! ***');
+                    EasyLoading.showToast('게임이 진행중입니다');
+                    if(controller.v_volumn.value == true) audioPlayer('asset/audio/error.mp3');
                   }
                 },
                 child: const Text(

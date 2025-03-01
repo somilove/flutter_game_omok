@@ -59,7 +59,7 @@ class StopButton extends StatelessWidget {
                       TextButton(
                           onPressed: () {
                             if(controller.v_volumn.value == true) audioPlayer('asset/audio/select.ogg');
-                            Navigator.of(context).pop();},
+                                                                                                           Navigator.of(context).pop();},
                           child: const Text('아니오', style: TextStyle(fontSize: 16))),
                     ],
                   );
@@ -68,7 +68,7 @@ class StopButton extends StatelessWidget {
             if(controller.v_volumn.value == true) audioPlayer('asset/audio/error.mp3');
             EasyLoading.instance.fontSize = 16;
             EasyLoading.instance.displayDuration = const Duration(milliseconds: 500);
-            EasyLoading.showToast(' *** Not executed! ***');
+            EasyLoading.showToast('게임을 먼저 진행해주세요');
           }
         },
         child: const Text('기권',

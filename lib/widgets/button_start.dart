@@ -67,7 +67,7 @@ class StartButton extends StatelessWidget {
           const Duration(milliseconds: 500);
           if(controller.v_volumn.value == true) audioPlayer('asset/audio/error.mp3');
           EasyLoading.showToast(
-              ' *** Not executed! ***');
+              '게임이 진행중입니다');
         }
       },
       child: Container(

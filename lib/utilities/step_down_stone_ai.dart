@@ -442,8 +442,10 @@ void step_downStone_AI3() {
 
 // 4-1. AI3찾기 ---행
 void step_downStone_AI3_row() {
+      // for (i = 0; i < controller.v_rowBox.value; i++) {
+      //   for (j = 0; j <= controller.v_colBox.value - 4; j++) {
   for (i = 0; i < controller.v_rowBox.value; i++) {
-    for (j = 0; j <= controller.v_colBox.value - 4; j++) {
+    for (j = 1; j <= controller.v_colBox.value - 5; j++) { //양쪽 벽에 붙어 있을 경우 썩은 3
       int _v_count_n = 0;
       int _v_count_AI = 0;
       int _v_x_AI = 0; //빈곳 수
@@ -455,10 +457,18 @@ void step_downStone_AI3_row() {
           _v_x_AI = i;
           _v_y_AI = j + jj;
         } else {
+          if (jj == 0 && controller.v_listBox.value[i][j - 1] == controller.v_youStone.value)
+            break; //양쪽벽에 AI돌이 있는 경우 썩은 3
+          if (jj == 3 && controller.v_listBox.value[i][j + jj + 1] == controller.v_youStone.value) break;
+
+
           _v_count_AI++;
         }
       }
       if(_v_count_n == 1 && _v_count_AI == 3) {
+        // if(controller.v_listBox.value[i][j-1] == controller.v_youStone.value) {
+        //   if( j + jj == 12 || controller.v_listBox.value[i][j+jj+1] == controller.v_youStone.value) return;
+        // }
         controller.v_x_AI.value = _v_x_AI;
         controller.v_y_AI.value = _v_y_AI;
         controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
@@ -470,8 +480,11 @@ void step_downStone_AI3_row() {
 
 //4-2. AI3 찾기 ---열
 void step_downStone_AI3_col() {
+  // for (j = 0; j < controller.v_colBox.value; j++) {
+  //   for (i = 0; i <= controller.v_rowBox.value -4; i++) {
   for (j = 0; j < controller.v_colBox.value; j++) {
-    for (i = 0; i <= controller.v_rowBox.value -4; i++) {
+    for (i = 1; i <= controller.v_rowBox.value - 5; i++) { //양쪽 벽에 붙어 있을 경우 썩은 3
+
       int _v_count_n = 0;
       int _v_count_AI = 0;
       int _v_x_AI = 0;
@@ -483,10 +496,16 @@ void step_downStone_AI3_col() {
           _v_x_AI = i + ii;
           _v_y_AI = j;
         } else {
+          if (ii == 0 && controller.v_listBox.value[i - 1][j] == controller.v_youStone.value) break;
+          if (ii == 3 && controller.v_listBox.value[i + ii + 1][j] == controller.v_youStone.value) break;
+
           _v_count_AI++;
         }
       }
       if (_v_count_n == 1 && _v_count_AI == 3) {
+        // if(controller.v_listBox.value[i-1][j] == controller.v_youStone.value) {
+        //   if( i + ii == 12 || controller.v_listBox.value[i+ii+1][j] == controller.v_youStone.value) return;
+        // }
         controller.v_x_AI.value = _v_x_AI;
         controller.v_y_AI.value = _v_y_AI;
         controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
@@ -498,8 +517,10 @@ void step_downStone_AI3_col() {
 
 //4-3. AI3 찾기 --- 대각선 우측하향
 void step_downStone_AI3_grd1() {
-  for (i = 0; i <= controller.v_rowBox.value - 4; i ++) {
-    for (j = 0; j <= controller.v_colBox.value - 4; j++) {
+  // for (i = 0; i <= controller.v_rowBox.value - 4; i ++) {
+  //   for (j = 0; j <= controller.v_colBox.value - 4; j++) {
+  for (i = 1; i < controller.v_rowBox.value - 5; i++) { //양쪽 벽에 붙어 있을 경우 썩은 3
+    for (j = 1; j <= controller.v_colBox.value - 5; j++) {
       int _v_count_n = 0;
       int _v_count_AI = 0;
       int _v_x_AI = 0;
@@ -511,10 +532,17 @@ void step_downStone_AI3_grd1() {
           _v_x_AI = i + jj;
           _v_y_AI = j + jj;
         } else {
+          if (jj == 0 && controller.v_listBox.value[i - 1][j - 1] == controller.v_youStone.value) break;
+          if (jj == 3 && controller.v_listBox.value[i + jj + 1][j + jj + 1] == controller.v_youStone.value)
+            break;
+
           _v_count_AI++;
         }
       }
       if (_v_count_n == 1 && _v_count_AI == 3) {
+        // if(controller.v_listBox.value[i-1][j-1] == controller.v_youStone.value) {
+        //   if( i + jj ==12 || j + jj == 12 || controller.v_listBox.value[i+jj+1][j+jj+1] == controller.v_youStone.value) return;
+        // }
         controller.v_x_AI.value = _v_x_AI;
         controller.v_y_AI.value = _v_y_AI;
         controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
@@ -526,8 +554,10 @@ void step_downStone_AI3_grd1() {
 
 //4_4. AI3 찾기 --- 대각선 우측상향
 void step_downStone_AI3_grd2() {
-  for (i = 3; i < controller.v_rowBox.value; i++) {
-    for (j = 0; j <= controller.v_colBox.value - 4; j++) {
+  // for (i = 3; i < controller.v_rowBox.value; i++) {
+  //   for (j = 0; j <= controller.v_colBox.value - 4; j++) {
+  for (i = 4; i < controller.v_rowBox.value - 1; i++) {
+    for (j = 0; j <= controller.v_colBox.value - 5; j++) {
       int _v_count_n = 0;
       int _v_count_AI = 0;
       int _v_x_AI = 0;
@@ -539,10 +569,16 @@ void step_downStone_AI3_grd2() {
           _v_x_AI = i - jj;
           _v_y_AI = j + jj;
         } else {
+          if (jj == 0 && controller.v_listBox.value[i + 1][j - 1] == controller.v_youStone.value) break;
+          if (jj == 3 && controller.v_listBox.value[i - jj - 1][j + jj + 1] == controller.v_youStone.value) break;
+
           _v_count_AI++;
         }
       }
       if (_v_count_n == 1 && _v_count_AI == 3) {
+        // if(controller.v_listBox.value[i+1][j-1] == controller.v_youStone.value) {
+        //   if( i - jj == 0 || j + jj == 12 || controller.v_listBox.value[i-jj-1][j+jj+1] == controller.v_youStone.value) return;
+        // }
         controller.v_x_AI.value = _v_x_AI;
         controller.v_y_AI.value = _v_y_AI;
         controller.v_listBox.value[controller.v_x_AI.value][controller.v_y_AI.value] = controller.v_down.value;
@@ -673,7 +709,7 @@ void step_downStone_YOU3_grd2() {
           _v_x_AI = i - jj;
           _v_y_AI = j + jj;
         } else {
-          if (jj == 0 && controller.v_listBox.value[i - 1][j + 1] == controller.v_aiStone.value) break;
+          if (jj == 0 && controller.v_listBox.value[i + 1][j - 1] == controller.v_aiStone.value) break;
           if (jj == 3 && controller.v_listBox.value[i - jj - 1][j + jj + 1] == controller.v_aiStone.value) break;
           _v_count_YOU++;
         }

@@ -11,7 +11,6 @@ class VariablesController extends GetxController {
   var v_tie = 0.obs; //( 무 = v_tie)
   var v_defeat = 0.obs; //(패 = v_defeat)
   var v_score = 0.obs; //점수
-
   var v_rowBox = 13.obs; //행 v_listBox의 2차원 배열요소수
   var v_colBox = 13.obs;
 //v_x_count, v_y_count => 마지막에 놓은 돌의 위치를 저장하는 변수
@@ -30,7 +29,6 @@ class VariablesController extends GetxController {
   var v_scoreGrd2 = 0.obs;
   var v_today = ''.obs; //DB 입력시 px(primary key)로 사용되는 일시 / 게임 종료될때 현재시간 년월일시분초를 String 타입으로 관리
   var v_isAiPlay = false.obs;
-
 
   //모든 Flag 설정
   var v_flagButtonPlay = true.obs; //게임 시작 버튼
